@@ -132,36 +132,43 @@
 
 <!-- Navbar -->
 <nav class="navbar navbar-custom sticky-top py-3">
-  <div class="container">
+  <div class="container d-flex flex-column flex-md-row align-items-center gap-3 justify-content-between">
     <span class="navbar-brand-custom d-flex align-items-center gap-2 mb-0">
       <i class="bi bi-hdd-stack-fill"></i> CompStock Manager
     </span>
-    <button class="btn btn-navy px-3" data-bs-toggle="modal" data-bs-target="#addProductModal">
-      <i class="bi bi-plus-lg"></i> เพิ่มสินค้าใหม่
-    </button>
+    <div class="d-flex align-items-center gap-2 flex-wrap">
+      <select id="languageSelect" class="form-select form-select-sm w-auto">
+        <option value="th">ไทย</option>
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+      </select>
+      <button id="addProductButton" class="btn btn-navy px-3" data-bs-toggle="modal" data-bs-target="#addProductModal">
+        <i class="bi bi-plus-lg"></i> เพิ่มสินค้าใหม่
+      </button>
+    </div>
   </div>
 </nav>
 
 <div class="container py-4">
   <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between mb-3 gap-3">
-    <h5 class="section-title mb-0"><i class="bi bi-box-seam"></i> รายการสินค้าอุปกรณ์คอมพิวเตอร์</h5>
+    <h5 id="sectionTitle" class="section-title mb-0"><i class="bi bi-box-seam"></i> รายการสินค้าอุปกรณ์คอมพิวเตอร์</h5>
     <div class="w-100 w-md-50">
       <input id="searchInput" type="search" class="form-control" placeholder="ค้นหาสินค้า... เช่น RAM, SSD, CPU">
     </div>
   </div>
-  <div class="mb-3 text-muted small"><span id="productCount">0</span> รายการ</div>
+  <div class="mb-3 text-muted small"><span id="productCount">0</span></div>
 
   <!-- Loading -->
   <div id="loadingState" class="loading-state">
     <div class="spinner-border" style="color: var(--blue);" role="status"></div>
-    <p class="mt-3">กำลังโหลดข้อมูลสินค้า...</p>
+    <p id="loadingText" class="mt-3">กำลังโหลดข้อมูลสินค้า...</p>
   </div>
 
   <!-- Empty state -->
   <div id="emptyState" class="empty-state d-none">
     <i class="bi bi-inbox"></i>
-    <p class="mt-3 mb-0">ยังไม่มีสินค้าในระบบ</p>
-    <p>กดปุ่ม "เพิ่มสินค้าใหม่" เพื่อเริ่มบันทึกข้อมูล</p>
+    <p id="emptyTitle" class="mt-3 mb-0">ยังไม่มีสินค้าในระบบ</p>
+    <p id="emptyHelp">กดปุ่ม "เพิ่มสินค้าใหม่" เพื่อเริ่มบันทึกข้อมูล</p>
   </div>
 
   <!-- Product grid -->
@@ -173,34 +180,34 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title"><i class="bi bi-plus-circle"></i> เพิ่มสินค้าใหม่</h5>
+        <h5 id="modalTitle" class="modal-title"><i class="bi bi-plus-circle"></i> เพิ่มสินค้าใหม่</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <form id="addProductForm">
         <div class="modal-body">
 
           <div class="mb-3">
-            <label class="form-label fw-semibold">ชื่อสินค้า <span class="text-danger">*</span></label>
+            <label id="labelProductName" class="form-label fw-semibold">ชื่อสินค้า <span class="text-danger">*</span></label>
             <input type="text" class="form-control" id="productName" placeholder="เช่น RAM DDR4 16GB" required>
           </div>
 
           <div class="mb-3">
-            <label class="form-label fw-semibold">รายละเอียดสินค้า</label>
+            <label id="labelProductDesc" class="form-label fw-semibold">รายละเอียดสินค้า</label>
             <textarea class="form-control" id="productDesc" rows="3" placeholder="รายละเอียด สเปค หรือหมายเหตุเพิ่มเติม"></textarea>
           </div>
 
           <div class="mb-3">
-            <label class="form-label fw-semibold">ราคา (กีบ) <span class="text-danger">*</span></label>
+            <label id="labelProductPrice" class="form-label fw-semibold">ราคา (กีบ) <span class="text-danger">*</span></label>
             <div class="input-group">
-              <span class="input-group-text">₭</span>
+              <span id="priceCurrency" class="input-group-text">₭</span>
               <input type="number" class="form-control" id="productPrice" min="0" step="0.01" placeholder="0.00" required>
             </div>
           </div>
 
           <div class="mb-2">
-            <label class="form-label fw-semibold">รูปภาพสินค้า</label>
+            <label id="labelProductImage" class="form-label fw-semibold">รูปภาพสินค้า</label>
             <input type="file" class="form-control" id="productImage" accept="image/*" capture="environment">
-            <div class="form-text"><i class="bi bi-camera"></i> สามารถถ่ายรูปจากกล้องมือถือ หรือเลือกไฟล์จากเครื่องได้</div>
+            <div id="imageHelperText" class="form-text"><i class="bi bi-camera"></i> สามารถถ่ายรูปจากกล้องมือถือ หรือเลือกไฟล์จากเครื่องได้</div>
           </div>
 
           <div id="imagePreviewWrap" class="text-center">
@@ -209,7 +216,7 @@
 
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+          <button type="button" id="cancelBtn" class="btn btn-outline-secondary" data-bs-dismiss="modal">ยกเลิก</button>
           <button type="submit" class="btn btn-navy" id="saveBtn">
             <span id="saveBtnText"><i class="bi bi-save"></i> บันทึกสินค้า</span>
             <span id="saveBtnSpinner" class="spinner-border spinner-border-sm d-none" role="status"></span>
@@ -254,10 +261,115 @@ const CLOUDINARY_UPLOAD_PRESET = "compstock_unsigned";
 
 let allProducts = [];
 
+const translations = {
+  th: {
+    pageTitle: "CompStock Manager - ระบบจัดการสินค้าอุปกรณ์คอมพิวเตอร์",
+    addProductButton: "เพิ่มสินค้าใหม่",
+    sectionTitle: "รายการสินค้าอุปกรณ์คอมพิวเตอร์",
+    searchPlaceholder: "ค้นหาสินค้า... เช่น RAM, SSD, CPU",
+    loadingText: "กำลังโหลดข้อมูลสินค้า...",
+    emptyTitle: "ยังไม่มีสินค้าในระบบ",
+    emptyHelp: "กดปุ่ม \"เพิ่มสินค้าใหม่\" เพื่อเริ่มบันทึกข้อมูล",
+    modalTitle: "เพิ่มสินค้าใหม่",
+    labelProductName: "ชื่อสินค้า",
+    labelProductDesc: "รายละเอียดสินค้า",
+    labelProductPrice: "ราคา (กีบ)",
+    labelProductImage: "รูปภาพสินค้า",
+    imageHelperText: "สามารถถ่ายรูปจากกล้องมือถือ หรือเลือกไฟล์จากเครื่องได้",
+    placeholderProductName: "เช่น RAM DDR4 16GB",
+    placeholderProductDesc: "รายละเอียด สเปค หรือหมายเหตุเพิ่มเติม",
+    cancelButton: "ยกเลิก",
+    saveButton: "บันทึกสินค้า",
+    editModalTitle: "แก้ไขสินค้า",
+    countLabel: (count) => `${count} รายการ`,
+    noDescription: "ไม่มีรายละเอียด",
+    loadError: "ไม่สามารถโหลดข้อมูลสินค้าได้: ",
+    requireFields: "กรุณากรอกชื่อสินค้าและราคาให้ครบถ้วน",
+    saved: "บันทึกสินค้าเรียบร้อยแล้ว",
+    saveError: "เกิดข้อผิดพลาดในการบันทึก: ",
+    confirmDelete: "ยืนยันการลบสินค้านี้หรือไม่?",
+    deleted: "ลบสินค้าเรียบร้อยแล้ว",
+    deleteError: "เกิดข้อผิดพลาดในการลบสินค้า: ",
+    updateNoRows: "ไม่พบสินค้าที่จะอัปเดต หรือคุณไม่มีสิทธิ์แก้ไข",
+  },
+  en: {
+    pageTitle: "CompStock Manager - Product Inventory",
+    addProductButton: "Add Product",
+    sectionTitle: "Computer Parts Inventory",
+    searchPlaceholder: "Search products... e.g. RAM, SSD, CPU",
+    loadingText: "Loading products...",
+    emptyTitle: "No products yet",
+    emptyHelp: "Click \"Add Product\" to start adding items",
+    modalTitle: "Add New Product",
+    labelProductName: "Product Name",
+    labelProductDesc: "Product Description",
+    labelProductPrice: "Price (KIP)",
+    labelProductImage: "Product Image",
+    imageHelperText: "Use your camera or choose a file.",
+    placeholderProductName: "e.g. RAM DDR4 16GB",
+    placeholderProductDesc: "Specifications, notes or additional details",
+    cancelButton: "Cancel",
+    saveButton: "Save Product",
+    editModalTitle: "Edit Product",
+    countLabel: (count) => `${count} items`,
+    noDescription: "No description",
+    loadError: "Unable to load products: ",
+    requireFields: "Please enter product name and price",
+    saved: "Product saved successfully",
+    saveError: "Error saving product: ",
+    updateNoRows: "No product was updated or you don't have permission to edit it",
+    confirmDelete: "Delete this product?",
+    deleted: "Product deleted",
+    deleteError: "Error deleting product: ",
+  },
+  zh: {
+    pageTitle: "CompStock Manager - 产品库存",
+    addProductButton: "添加产品",
+    sectionTitle: "电脑配件库存",
+    searchPlaceholder: "搜索产品... 如 RAM、SSD、CPU",
+    loadingText: "正在加载商品...",
+    emptyTitle: "暂无商品",
+    emptyHelp: "点击\"添加产品\"开始添加商品",
+    modalTitle: "添加新商品",
+    labelProductName: "商品名称",
+    labelProductDesc: "商品描述",
+    labelProductPrice: "价格 (基普)",
+    labelProductImage: "产品图片",
+    imageHelperText: "可使用手机摄像头或选择本地图片。",
+    placeholderProductName: "例如 RAM DDR4 16GB",
+    placeholderProductDesc: "规格、备注或其他说明",
+    cancelButton: "取消",
+    saveButton: "保存商品",
+    editModalTitle: "编辑商品",
+    countLabel: (count) => `${count} 件`,
+    noDescription: "暂无描述",
+    loadError: "无法加载商品: ",
+    requireFields: "请填写商品名称和价格",
+    saved: "商品保存成功",
+    saveError: "保存商品时出错: ",
+    updateNoRows: "未更新任何商品，或您没有编辑权限",
+    confirmDelete: "确认删除此商品？",
+    deleted: "商品已删除",
+    deleteError: "删除商品时出错: ",
+  },
+};
+
 // ------------------- DOM Elements -------------------
 const productGrid = document.getElementById("productGrid");
 const searchInput = document.getElementById("searchInput");
 const productCount = document.getElementById("productCount");
+const languageSelect = document.getElementById("languageSelect");
+const addProductButton = document.getElementById("addProductButton");
+const loadingText = document.getElementById("loadingText");
+const emptyTitle = document.getElementById("emptyTitle");
+const emptyHelp = document.getElementById("emptyHelp");
+const modalTitle = document.getElementById("modalTitle");
+const labelProductName = document.getElementById("labelProductName");
+const labelProductDesc = document.getElementById("labelProductDesc");
+const labelProductPrice = document.getElementById("labelProductPrice");
+const labelProductImage = document.getElementById("labelProductImage");
+const imageHelperText = document.getElementById("imageHelperText");
+const sectionTitle = document.getElementById("sectionTitle");
 const loadingState = document.getElementById("loadingState");
 const emptyState = document.getElementById("emptyState");
 const addProductForm = document.getElementById("addProductForm");
@@ -269,6 +381,44 @@ const saveBtnText = document.getElementById("saveBtnText");
 const saveBtnSpinner = document.getElementById("saveBtnSpinner");
 const addProductModalEl = document.getElementById("addProductModal");
 const addProductModal = new bootstrap.Modal(addProductModalEl);
+
+let currentLang = localStorage.getItem("appLanguage") || "th";
+let currentEditId = null;
+let currentEditImageUrl = null;
+
+function setProductCount(count) {
+  productCount.textContent = translations[currentLang].countLabel(count);
+}
+
+function setLanguage(lang) {
+  if (!translations[lang]) lang = "th";
+  currentLang = lang;
+  document.documentElement.lang = lang;
+  document.title = translations[lang].pageTitle;
+  addProductButton.innerHTML = `<i class="bi bi-plus-lg"></i> ${translations[lang].addProductButton}`;
+  sectionTitle.textContent = translations[lang].sectionTitle;
+  searchInput.placeholder = translations[lang].searchPlaceholder;
+  loadingText.textContent = translations[lang].loadingText;
+  emptyTitle.textContent = translations[lang].emptyTitle;
+  emptyHelp.textContent = translations[lang].emptyHelp;
+  modalTitle.textContent = currentEditId ? translations[lang].editModalTitle : translations[lang].modalTitle;
+  labelProductName.innerHTML = `${translations[lang].labelProductName} <span class="text-danger">*</span>`;
+  labelProductDesc.textContent = translations[lang].labelProductDesc;
+  labelProductPrice.innerHTML = `${translations[lang].labelProductPrice} <span class="text-danger">*</span>`;
+  labelProductImage.textContent = translations[lang].labelProductImage;
+  imageHelperText.textContent = translations[lang].imageHelperText;
+  document.getElementById("cancelBtn").textContent = translations[lang].cancelButton;
+  document.getElementById("productName").placeholder = translations[lang].placeholderProductName;
+  document.getElementById("productDesc").placeholder = translations[lang].placeholderProductDesc;
+  saveBtnText.innerHTML = `<i class="bi bi-save"></i> ${translations[lang].saveButton}`;
+  languageSelect.value = lang;
+  localStorage.setItem("appLanguage", lang);
+  applyProductFilter();
+}
+
+languageSelect?.addEventListener("change", (e) => setLanguage(e.target.value));
+
+setLanguage(currentLang);
 
 // ------------------- Utility: Toast -------------------
 function showToast(message, type = "success") {
@@ -358,14 +508,14 @@ async function fetchProducts() {
 
   if (error) {
     console.error("Fetch error:", error);
-    showToast("ไม่สามารถโหลดข้อมูลสินค้าได้: " + error.message, "danger");
+    showToast(translations[currentLang].loadError + error.message, "danger");
     return;
   }
 
   if (!data || data.length === 0) {
     allProducts = [];
     emptyState.classList.remove("d-none");
-    productCount.textContent = "0";
+    setProductCount(0);
     return;
   }
 
@@ -382,7 +532,7 @@ function applyProductFilter() {
       })
     : allProducts;
 
-  productCount.textContent = `${filtered.length}`;
+  setProductCount(filtered.length);
   renderProducts(filtered);
 }
 
@@ -405,12 +555,17 @@ async function renderProducts(products) {
         <div class="product-img-wrap">${imageHtml}</div>
         <div class="card-body d-flex flex-column">
           <h6 class="card-title-custom mb-1">${escapeHtml(p.name)}</h6>
-          <p class="card-desc mb-2">${escapeHtml(p.description || "ไม่มีรายละเอียด")}</p>
+          <p class="card-desc mb-2">${escapeHtml(p.description || translations[currentLang].noDescription)}</p>
           <div class="d-flex justify-content-between align-items-center mt-auto">
             <span class="price-badge">${formatPrice(p.price)}</span>
-            <button class="btn btn-sm btn-outline-danger delete-btn" data-id="${p.id}" data-image="${p.image_url || ""}">
-              <i class="bi bi-trash"></i>
-            </button>
+            <div>
+              <button class="btn btn-sm btn-outline-primary edit-btn me-2" data-id="${p.id}">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-danger delete-btn" data-id="${p.id}" data-image="${p.image_url || ""}">
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
           </div>
           <div class="card-date mt-2"><i class="bi bi-clock-history"></i> ${formatDate(p.created_at)}</div>
         </div>
@@ -418,6 +573,13 @@ async function renderProducts(products) {
     `;
     productGrid.appendChild(col);
   }
+
+  document.querySelectorAll(".edit-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const product = allProducts.find((item) => item.id.toString() === btn.dataset.id.toString());
+      if (product) openEditModal(product);
+    });
+  });
 
   document.querySelectorAll(".delete-btn").forEach((btn) => {
     btn.addEventListener("click", () => handleDelete(btn.dataset.id, btn.dataset.image));
@@ -430,7 +592,32 @@ function escapeHtml(str) {
   return div.innerHTML;
 }
 
-// ------------------- Insert สินค้าใหม่ -------------------
+function openEditModal(product) {
+  currentEditId = String(product.id);
+  currentEditImageUrl = product.image_url || null;
+  document.getElementById("productName").value = product.name || "";
+  document.getElementById("productDesc").value = product.description || "";
+  document.getElementById("productPrice").value = product.price ?? "";
+  if (product.image_url) {
+    imagePreview.src = product.image_url;
+    imagePreviewWrap.style.display = "block";
+  } else {
+    imagePreview.src = "";
+    imagePreviewWrap.style.display = "none";
+  }
+  modalTitle.textContent = translations[currentLang].editModalTitle;
+  saveBtnText.innerHTML = `<i class="bi bi-save"></i> ${translations[currentLang].saveButton}`;
+  addProductModal.show();
+}
+
+addProductButton.addEventListener("click", () => {
+  currentEditId = null;
+  currentEditImageUrl = null;
+  modalTitle.textContent = translations[currentLang].modalTitle;
+  saveBtnText.innerHTML = `<i class="bi bi-save"></i> ${translations[currentLang].saveButton}`;
+});
+
+// ------------------- Insert / Edit สินค้า -------------------
 addProductForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -440,14 +627,14 @@ addProductForm.addEventListener("submit", async (e) => {
   const file = productImageInput.files[0];
 
   if (!name || !price) {
-    showToast("กรุณากรอกชื่อสินค้าและราคาให้ครบถ้วน", "danger");
+    showToast(translations[currentLang].requireFields, "danger");
     return;
   }
 
   setSaving(true);
 
   try {
-    let imageUrl = null;
+    let imageUrl = currentEditImageUrl;
 
     if (file) {
       imageUrl = await uploadProductImage(file);
@@ -460,17 +647,59 @@ addProductForm.addEventListener("submit", async (e) => {
       image_url: imageUrl,
     };
 
-    const { data, error } = await supabaseClient
-      .from(TABLE_NAME)
-      .insert([payload])
-      .select()
-      .single();
+    let data;
+    let error;
 
-    if (error) throw error;
-    if (!data) throw new Error("Supabase insert returned no data");
+    if (currentEditId) {
+      const matchValue = /^\d+$/.test(currentEditId) ? Number(currentEditId) : currentEditId;
+      console.log("Update id:", matchValue, "payload:", payload);
 
-    console.log("Insert success:", data);
-    showToast("บันทึกสินค้าเรียบร้อยแล้ว");
+      const rowCheck = await supabaseClient
+        .from(TABLE_NAME)
+        .select("id")
+        .eq("id", matchValue)
+        .single();
+
+      console.log("Existing row check:", rowCheck);
+      if (rowCheck.error && rowCheck.status !== 406) {
+        throw rowCheck.error;
+      }
+      if (!rowCheck.data) {
+        throw new Error(translations[currentLang].updateNoRows);
+      }
+
+      const result = await supabaseClient
+        .from(TABLE_NAME)
+        .update(payload)
+        .eq("id", matchValue)
+        .select();
+
+      data = result.data;
+      error = result.error;
+      console.log("Update result:", result);
+
+      if (error) throw error;
+      if (!data || data.length === 0) {
+        throw new Error(translations[currentLang].updateNoRows);
+      }
+      data = data[0];
+    } else {
+      const result = await supabaseClient
+        .from(TABLE_NAME)
+        .insert([payload])
+        .select()
+        .single();
+
+      data = result.data;
+      error = result.error;
+      if (error) throw error;
+      if (!data) throw new Error("Supabase operation returned no data");
+    }
+
+    console.log("Save success:", data);
+    showToast(translations[currentLang].saved);
+    currentEditId = null;
+    currentEditImageUrl = null;
     addProductForm.reset();
     imagePreviewWrap.style.display = "none";
     imagePreview.src = "";
@@ -478,7 +707,7 @@ addProductForm.addEventListener("submit", async (e) => {
     await fetchProducts();
   } catch (err) {
     console.error("Insert error:", err);
-    showToast("เกิดข้อผิดพลาดในการบันทึก: " + (err?.message || err), "danger");
+    showToast(translations[currentLang].saveError + (err?.message || err), "danger");
   } finally {
     setSaving(false);
   }
@@ -492,7 +721,7 @@ function setSaving(isSaving) {
 
 // ------------------- Delete สินค้า -------------------
 async function handleDelete(id, imageUrl) {
-  if (!confirm("ยืนยันการลบสินค้านี้หรือไม่?")) return;
+  if (!confirm(translations[currentLang].confirmDelete)) return;
 
   try {
     await deleteProductImage(imageUrl);
@@ -500,17 +729,18 @@ async function handleDelete(id, imageUrl) {
     const { error } = await supabaseClient.from(TABLE_NAME).delete().eq("id", id);
     if (error) throw error;
 
-    showToast("ลบสินค้าเรียบร้อยแล้ว");
+    showToast(translations[currentLang].deleted);
     await fetchProducts();
   } catch (err) {
     console.error("Delete error:", err);
-    showToast("เกิดข้อผิดพลาดในการลบสินค้า: " + err.message, "danger");
+    showToast(translations[currentLang].deleteError + err.message, "danger");
   }
 }
 
 // รีเซ็ตฟอร์มเมื่อปิด Modal
 addProductModalEl.addEventListener("hidden.bs.modal", () => {
-  addProductForm.reset();
+  currentEditId = null;
+  currentEditImageUrl = null;
   imagePreviewWrap.style.display = "none";
   imagePreview.src = "";
 });
